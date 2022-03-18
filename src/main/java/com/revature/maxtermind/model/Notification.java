@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,16 +17,17 @@ import javax.persistence.*;
 public class Notification {
 
     @Id
-    int id;
-    @OneToMany
-    @JoinColumn(name = "from_employee_id")
-    Employee fromEmployee;
-    @OneToMany
-    @JoinColumn(name = "to_employee_id")
-    Employee toEmployee;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column
-    String description;
-    @OneToMany
+    private String description;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "from_employee_id")
+    private Notification fromNotification;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "to_employee_id")
+    private Notification toNotification;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "action_id")
-    Action action;
+    private Action action;
 }
