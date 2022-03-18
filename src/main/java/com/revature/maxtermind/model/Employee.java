@@ -5,44 +5,47 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @ToString
-@Entity(name = "Employee")
+@Entity
 public class Employee {
 
     @Id
-    int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column
-    String password;
+    private String password;
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
     @Column(name = "last_name")
-    String lastName;
-    @Column(unique = true)
-    String email;
+    private String lastName;
+    @Column
+    private String email;
     @Column(name = "phone_number")
-    int phoneNumber;
+    private long phoneNumber;
+    @Column
+    private String photo;
     @Column(name = "start_date")
-    Date startDate;
-    @Column(name = "current_position")
-    @ManyToOne
-    @JoinColumn(name = "position_id")
-    Position currentPosition;
-    @OneToMany(mappedBy = "employee")
-    Set<Application> applications;
-    @OneToMany(mappedBy = "toEmployee")
-    Set<Notification> notifications;
-    @ManyToOne
+    @DateTimeFormat(pattern = "mm-dd-yyyy")
+    private Date startDate;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "manager_id")
-    Employee manager;
-
-
-
+    private Employee managerId;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "current_role")
+    private Employee currentRole;
+    @OneToMany(mappedBy = "id", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Notification> notifications;
+    @OneToMany(mappedBy = "id", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Application> applications;
 }

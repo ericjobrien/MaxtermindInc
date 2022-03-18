@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -20,13 +19,16 @@ import java.util.Set;
 public class Position {
 
     @Id
-    int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column
-    String name;
+    private String name;
     @Column
-    BigDecimal salary;
+    private BigDecimal salary;
     @Column(name = "is_admin")
-    boolean isAdmin;
-    @OneToMany(mappedBy = "position")
-    Set<Application> applications;
+    private boolean isAdmin;
+    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Set<Position> positions;
+    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Set<Application> applications;
 }
