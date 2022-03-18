@@ -43,7 +43,7 @@ public class Employee {
     private Employee managerId;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "current_role")
-    private Employee currentRole;
+    private Position currentRole;
     @OneToMany(mappedBy = "id", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Notification> notifications;
     @OneToMany(mappedBy = "id", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
