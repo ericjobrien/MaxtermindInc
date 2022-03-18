@@ -21,27 +21,22 @@ import java.util.Date;
 public class Notification implements Serializable {
 
     @Id
-    int id;
-
-    @ManyToOne
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column
+    private String description;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "from_employee_id")
-    Employee fromEmployee;
-
-    @ManyToOne
+    private Employee fromEmployee;
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "to_employee_id")
     Employee toEmployee;
-
-    @Column
-    String description;
-
     @Column
     boolean unread;
-
     @Column
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     Date date;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "action_id")
-    Action action;
+    private Action action;
 }

@@ -5,9 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -18,8 +17,10 @@ import java.io.Serializable;
 public class Status  implements Serializable {
 
     @Id
-    int id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column
-    String name;
+    private String name;
+    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Set<Application> applications;
 }

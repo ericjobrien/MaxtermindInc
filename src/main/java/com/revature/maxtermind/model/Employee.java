@@ -24,43 +24,31 @@ import java.util.Set;
 public class Employee implements Serializable {
 
     @Id
-    int id;
-
-    @Column(nullable = false)
-    String password;
-
-    @Column(name = "first_name")
-    String firstName;
-
-    @Column(name = "last_name")
-    String lastName;
-
-    @Column(unique = true, nullable = false)
-    String email;
-
-    @Column(name = "phone_number")
-    int phoneNumber;
-
-    @Column(name = "start_date")
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
-    Date startDate;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column
-    String photo;
-
-    @ManyToOne
-    @JoinColumn(name = "current_position")
-    Position position;
-
-    @ManyToOne
+    private String password;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column(unique = true, nullable = false)
+    private String email;
+    @Column(name = "phone_number")
+    private long phoneNumber;
+    @Column
+    private String photo;
+    @Column(name = "start_date")
+    @DateTimeFormat(pattern = "mm-dd-yyyy")
+    private Date startDate;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "manager_id")
-    Employee manager;
-
-    @OneToMany(mappedBy = "employee")
-    Set<Application> applications = new HashSet<>();
-
-    @OneToMany(mappedBy = "toEmployee")
-    Set<Notification> notifications= new HashSet<>();
-
-
+    private Employee manager;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "current_position")
+    private Position position;
+    @OneToMany(mappedBy = "toEmployee", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Notification> notifications;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Application> applications;
 }

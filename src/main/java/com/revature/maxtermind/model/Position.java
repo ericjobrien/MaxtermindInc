@@ -21,17 +21,14 @@ import java.util.Set;
 public class Position implements Serializable {
 
     @Id
-    int id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column
-    String name;
-
+    private String name;
     @Column
-    BigDecimal salary;
-
+    private BigDecimal salary;
     @Column(name = "is_admin")
-    boolean isAdmin;
-
-    @OneToMany(mappedBy = "position")
-    Set<Application> applications;
+    private boolean isAdmin;
+    @OneToMany(mappedBy = "position", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Set<Application> applications;
 }

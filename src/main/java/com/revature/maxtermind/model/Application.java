@@ -24,22 +24,18 @@ import java.util.Date;
 public class Application implements Serializable {
 
     @Id
-    int id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
-    Date date;
-
-    @ManyToOne
+    @DateTimeFormat(pattern = "mm-dd-yyyy")
+    private Date date;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "position_id")
-    Position position;
-
-    @ManyToOne
+    private Position position;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "employee_id")
-    Employee employee;
-
-    @ManyToOne
+    private Employee employee;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "status_id")
-    Status status;
-
+    private Status status;
 }
