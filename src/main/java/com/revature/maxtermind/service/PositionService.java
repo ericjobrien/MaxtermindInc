@@ -19,4 +19,8 @@ public class PositionService {
     public List<Position> findAll() {
         return positionRepository.findAll();
     }
+
+    public Position save(Position position) {
+        return positionRepository.save(position);
+    }
 }

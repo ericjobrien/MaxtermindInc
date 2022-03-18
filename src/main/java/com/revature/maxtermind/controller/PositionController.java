@@ -3,9 +3,7 @@ package com.revature.maxtermind.controller;
 import com.revature.maxtermind.model.Position;
 import com.revature.maxtermind.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -24,5 +22,9 @@ public class PositionController {
     @GetMapping
     public List<Position> findAll() {
         return positionService.findAll();
+    }
+    @PostMapping
+    public Position save(@RequestBody Position position) {
+        return positionService.save(position);
     }
 }

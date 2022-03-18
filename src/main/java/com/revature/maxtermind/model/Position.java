@@ -28,7 +28,7 @@ public class Position {
     @Column(name = "is_admin")
     private boolean isAdmin;
     @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private Set<Position> positions;
+    private Set<Employee> employees;
     @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<Application> applications;
 }
