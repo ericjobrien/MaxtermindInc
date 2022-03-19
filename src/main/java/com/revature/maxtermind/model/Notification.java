@@ -26,17 +26,23 @@ public class Notification implements Serializable {
     @Column
     private String description;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "from_employee_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "notificationFromEmployee_fk"), name = "from_employee_id")
     private Employee fromEmployee;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "to_employee_id")
-    Employee toEmployee;
-    @Column
-    boolean unread;
-    @Column
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
-    Date date;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "action_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "notificationToEmployee_fk"), name = "to_employee_id")
+    private Employee toEmployee;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(foreignKey = @ForeignKey(name = "notificationPosition_fk"), name = "position_id")
+    private Position position;
+    @Column
+    private boolean unread;
+    @Column
+    @DateTimeFormat(pattern = "mm-dd-yyyy")
+    private Date date;
+    /*
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(foreignKey = @ForeignKey(name = "notificationAction_fk"), name = "action_id")
+    */
+    @Enumerated(EnumType.STRING)
     private Action action;
 }

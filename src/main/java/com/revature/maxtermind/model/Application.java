@@ -18,7 +18,7 @@ import java.util.Date;
 @ToString
 @Entity
 @Table(name="Application", uniqueConstraints={
-        @UniqueConstraint(name = "applicationUniqueIndex", columnNames = {"position_id", "employee_id"})
+        @UniqueConstraint(name = "applicationUnique_index", columnNames = {"position_id", "employee_id"})
 })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Application implements Serializable {
@@ -30,12 +30,23 @@ public class Application implements Serializable {
     @DateTimeFormat(pattern = "mm-dd-yyyy")
     private Date date;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "position_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "applicationPosition_fk"), name = "position_id")
     private Position position;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "applicationEmployee_fk"), name = "employee_id")
     private Employee employee;
+    /*
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "status_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "applicationStatus_fk"), name = "status_id")
     private Status status;
+    */
+    @Column
+    private boolean recommended = false;
+    @Column
+    private boolean selected = false;
+    @Column
+    private boolean rejected = false;
+    @Column
+    private boolean approved = false;
+    
 }

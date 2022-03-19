@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.revature</groupId>
     <artifactId>maxtermind</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.6.1-SNAPSHOT</version>
     <name>maxtermind</name>
     <description>Back-End repository for Team-Max P2</description>
     <properties>
@@ -40,6 +40,12 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>10.2.0.jre11</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
         </dependency>
 
         <dependency>

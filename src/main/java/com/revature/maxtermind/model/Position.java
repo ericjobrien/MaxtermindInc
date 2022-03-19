@@ -10,6 +10,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -25,10 +26,13 @@ public class Position implements Serializable {
     private int id;
     @Column
     private String name;
-    @Column
+    @Column(precision = 8, scale = 2)
     private BigDecimal salary;
     @Column(name = "is_admin")
     private boolean isAdmin;
-    @OneToMany(mappedBy = "position", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private Set<Application> applications;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "manager_id", foreignKey = @ForeignKey(name = "positionManager_fk"))
+    private Employee manager;
+    @OneToMany(mappedBy = "position", cascade = CascadeType.MERGE)
+    private Set<Application> applications = new HashSet<>();
 }
