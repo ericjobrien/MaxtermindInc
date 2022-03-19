@@ -1,5 +1,7 @@
 package com.revature.maxtermind.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +9,7 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -14,7 +17,11 @@ import java.util.Date;
 @Data
 @ToString
 @Entity
-public class Application {
+@Table(name="Application", uniqueConstraints={
+        @UniqueConstraint(name = "applicationUnique_index", columnNames = {"position_id", "employee_id"})
+})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Application implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,13 +30,23 @@ public class Application {
     @DateTimeFormat(pattern = "mm-dd-yyyy")
     private Date date;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "position_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "applicationPosition_fk"), name = "position_id")
     private Position position;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "applicationEmployee_fk"), name = "employee_id")
     private Employee employee;
+    /*
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "status_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "applicationStatus_fk"), name = "status_id")
     private Status status;
+    */
+    @Column
+    private boolean recommended = false;
+    @Column
+    private boolean selected = false;
+    @Column
+    private boolean rejected = false;
+    @Column
+    private boolean approved = false;
+    
 }
-
