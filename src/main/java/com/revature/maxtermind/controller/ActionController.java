@@ -16,31 +16,31 @@ public class ActionController extends HandleExceptionController {
         this.service = service;
     }
 
-    @PostMapping("update_read/{employeeId}")
+    @GetMapping("switchtoread/{employeeId}")
     public boolean updateNotificationsByToEmployee(@PathVariable int employeeId){
         return service.updateNotificationsByToEmployee(employeeId);
     }
 
-    @PostMapping("recommended/{positionId}/{managerId}/{employeeId}")
+    @GetMapping("recommended/{positionId}/{managerId}/{employeeId}")
     public Notification recommendedAction(@PathVariable int positionId,
                                           @PathVariable int managerId,
                                           @PathVariable int employeeId){
-        return service.recommendedAction(positionId, managerId, employeeId);
+        return service.recommendedApplication(positionId, managerId, employeeId);
     }
 
-    @PostMapping("selected/{positionId}/{employeeId}")
+    @GetMapping("selected/{positionId}/{employeeId}")
     public Notification selectedAction(@PathVariable int positionId, @PathVariable int employeeId){
-        return service.selectedAction(positionId, employeeId);
+        return service.selectedApplication(positionId, employeeId);
     }
 
-    @PostMapping("approved/{applicationId}/{managerId}")
+    @GetMapping("approved/{applicationId}/{managerId}")
     public Notification approvedAction(@PathVariable int applicationId, @PathVariable int managerId){
-        return service.approvedAction(applicationId, managerId);
+        return service.approvedApplication(applicationId, managerId);
     }
 
-    @PostMapping("rejected/{applicationId}/{managerId}")
+    @GetMapping("rejected/{applicationId}/{managerId}")
     public Notification rejectedAction(@PathVariable int applicationId, @PathVariable int managerId){
-        return service.rejectedAction(applicationId, managerId);
+        return service.rejectedApplication(applicationId, managerId);
     }
 
 }

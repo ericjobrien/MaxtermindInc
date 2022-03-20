@@ -35,11 +35,6 @@ public class Application implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "applicationEmployee_fk"), name = "employee_id")
     private Employee employee;
-    /*
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(foreignKey = @ForeignKey(name = "applicationStatus_fk"), name = "status_id")
-    private Status status;
-    */
     @Column
     private boolean recommended = false;
     @Column

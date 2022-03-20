@@ -42,11 +42,6 @@ public class Employee implements Serializable {
     @Column(name = "start_date")
     @DateTimeFormat(pattern = "mm-dd-yyyy")
     private Date startDate;
-    /*
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(foreignKey = @ForeignKey(name = "employeeEmployee_fk"), name = "manager_id")
-    private Employee manager;
-    */
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "employeePosition_fk"), name = "current_position")
     private Position position;

@@ -30,7 +30,11 @@ public class ApplicationService {
     }
 
     public List<Application> findAllByPosition(int positionId) {
-        return repository.findAllByPosition(pService.findByPositionId(positionId));
+        return this.findAllByPosition(pService.findByPositionId(positionId));
+    }
+
+    public List<Application> findAllByPosition(Position position) {
+        return repository.findAllByPosition(position);
     }
 
     public List<Application> findAllByEmployee(int employeeId) {
