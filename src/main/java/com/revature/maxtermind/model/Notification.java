@@ -39,10 +39,6 @@ public class Notification implements Serializable {
     @Column
     @DateTimeFormat(pattern = "mm-dd-yyyy")
     private Date date;
-    /*
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(foreignKey = @ForeignKey(name = "notificationAction_fk"), name = "action_id")
-    */
     @Enumerated(EnumType.STRING)
     private Action action;
 }

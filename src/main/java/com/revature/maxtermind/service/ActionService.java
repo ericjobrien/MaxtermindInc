@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ActionService {
@@ -30,66 +31,86 @@ public class ActionService {
     }
 
     @Transactional
-    public Notification recommendedAction(int positionId, int managerId, int employeeId) {
+    public Notification recommendedApplication(int positionId, int managerId, int employeeId) {
         Position position = pService.findByPositionId(positionId);
         Employee toEmployee = eService.findByEmployeeId(employeeId);
-        Application application = createApplication(toEmployee, position);
-        application.setRecommended(true);
 
-        if(aService.saveApplication(application)!=null){
-            return nService.saveNotification(
-                    createNotification(Action.RECOMMENDATION,
-                            eService.findByEmployeeId(managerId), toEmployee, position));
+        Application application = aService.findByEmployeeAndPosition(toEmployee, position);
+        if(application==null) application = createApplication(toEmployee, position);
+
+        if(!application.isRecommended() && !application.isApproved() && !application.isRejected()) {
+            application.setRecommended(true);
+
+            if (aService.saveApplication(application) != null) {
+                return nService.saveNotification(
+                        createNotification(Action.RECOMMENDATION,
+                                eService.findByEmployeeId(managerId), toEmployee, position));
+            }
         }
 
         return null;
     }
 
     @Transactional
-    public Notification selectedAction(int positionId, int employeeId) {
+    public Notification selectedApplication(int positionId, int employeeId) {
         Position position = pService.findByPositionId(positionId);
         Employee employee = eService.findByEmployeeId(employeeId);
 
         Application application = aService.findByEmployeeAndPosition(employee, position);
         if(application==null) application = createApplication(employee, position);
 
-        application.setSelected(true);
+        if(!application.isSelected() && !application.isApproved() && !application.isRejected()) {
+            application.setSelected(true);
 
-        if(aService.saveApplication(application)!=null){
-            return nService.saveNotification(
-                    createNotification(Action.SELECTION, employee, position.getManager(), position));
+            if (aService.saveApplication(application) != null) {
+                return nService.saveNotification(
+                        createNotification(Action.SELECTION, employee, position.getManager(), position));
+            }
         }
 
         return null;
     }
 
     @Transactional
-    public Notification approvedAction(int applicationId, int managerId) {
+    public Notification approvedApplication(int applicationId, int managerId) {
         Application application = aService.findByApplicationId(applicationId);
-        application.setSelected(true);
-        Employee employee = application.getEmployee();
-        employee.setPosition(application.getPosition());
-        if(aService.updateApplication(application)!=null){
-            return nService.saveNotification(
-                    createNotification(Action.APPROVED, eService.findByEmployeeId(managerId),
-                            employee, application.getPosition()));
+        if(!application.isApproved() && !application.isRejected()) {
+            application.setApproved(true);
+            Employee employee = application.getEmployee();
+            employee.setPosition(application.getPosition());
+            if (aService.updateApplication(application) != null) {
+                Employee manager = eService.findByEmployeeId(managerId);
+                List<Application> list = aService.findAllByPosition(application.getPosition());
+                for (Application app : list) {
+                    if (app.getId() != application.getId()) {
+                        this.rejectedApplication(app, manager);
+                    }
+                }
+                return nService.saveNotification(
+                        createNotification(Action.APPROVED, manager, employee, application.getPosition()));
+            }
         }
 
         return null;
     }
 
     @Transactional
-    public Notification rejectedAction(int applicationId, int managerId) {
-        Application application = aService.findByApplicationId(applicationId);
-        application.setRejected(true);
-
-        if(aService.updateApplication(application)!=null){
-            return nService.saveNotification(
-                    createNotification(Action.REJECTED, eService.findByEmployeeId(managerId),
-                            application.getEmployee(), application.getPosition()));
+    public Notification rejectedApplication(Application application, Employee manager) {
+        if(!application.isRejected() && !application.isApproved()) {
+            application.setRejected(true);
+            if(aService.updateApplication(application)!=null){
+                return nService.saveNotification(
+                        createNotification(Action.REJECTED, manager,
+                                application.getEmployee(), application.getPosition()));
+            }
         }
 
         return null;
+    }
+
+    @Transactional
+    public Notification rejectedApplication(int applicationId, int managerId) {
+        return this.rejectedApplication(aService.findByApplicationId(applicationId), eService.findByEmployeeId(managerId));
     }
 
     private Application createApplication(Employee employee, Position position){
