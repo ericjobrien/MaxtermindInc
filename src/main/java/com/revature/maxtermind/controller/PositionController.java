@@ -39,9 +39,9 @@ public class PositionController extends HandleExceptionController {
         return service.findAllByName(name);
     }
 
-    @GetMapping("admin/{isAdmin}")
-    public List<Position> getPositionsByIsAdmin(@PathVariable boolean isAdmin){
-        return service.findAllByIsAdmin(isAdmin);
+    @GetMapping("admin/{admin}")
+    public List<Position> getPositionsByAdmin(@PathVariable boolean admin){
+        return service.findAllByAdmin(admin);
     }
 
     @GetMapping("salary/{salary}")
