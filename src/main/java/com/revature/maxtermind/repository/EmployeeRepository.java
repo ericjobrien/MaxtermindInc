@@ -22,7 +22,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("from Employee e where concat(e.firstName, e.lastName) like %:name%")
     List<Employee> findAllByNameContains(String name);
 
-    @Query("from Employee e join e.position p where p.isAdmin is true ")
+    @Query("from Employee e join e.position p where p.admin is true ")
     List<Employee> findAllAdministrators();
 
     @Query("from Employee e where e in ( select p.manager from Position p )")

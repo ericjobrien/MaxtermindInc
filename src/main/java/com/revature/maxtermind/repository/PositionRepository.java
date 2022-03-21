@@ -16,7 +16,7 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
 
     List<Position> findAllByNameContains(String name);
 
-    List<Position> findAllByIsAdmin(boolean isAdmin);
+    List<Position> findAllByAdmin(boolean admin);
 
     List<Position> findAllBySalary(BigDecimal salary);
 

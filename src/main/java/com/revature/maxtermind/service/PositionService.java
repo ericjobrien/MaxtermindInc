@@ -28,8 +28,8 @@ public class PositionService {
         return repository.findAllByNameContains(name);
     }
 
-    public List<Position> findAllByIsAdmin(boolean isAdmin) {
-        return repository.findAllByIsAdmin(isAdmin);
+    public List<Position> findAllByAdmin(boolean admin) {
+        return repository.findAllByAdmin(admin);
     }
 
     public List<Position> findAllBySalary(double salary) {

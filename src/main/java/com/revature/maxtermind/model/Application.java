@@ -1,11 +1,9 @@
 package com.revature.maxtermind.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,7 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ToString
 @Entity
 @Table(name="Application", uniqueConstraints={
         @UniqueConstraint(name = "applicationUnique_index", columnNames = {"position_id", "employee_id"})
@@ -27,13 +24,17 @@ public class Application implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
-    @DateTimeFormat(pattern = "mm-dd-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")//shape = JsonFormat.Shape.STRING,
     private Date date;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "applicationPosition_fk"), name = "position_id")
+    @JsonIgnoreProperties(value = "applications")
     private Position position;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "applicationEmployee_fk"), name = "employee_id")
+    @JsonIgnoreProperties(value = "applications")
+    @JsonView
     private Employee employee;
     @Column
     private boolean recommended = false;
@@ -43,5 +44,20 @@ public class Application implements Serializable {
     private boolean rejected = false;
     @Column
     private boolean approved = false;
-    
+
+    @Override
+    public String toString() {
+        return "Application{" +
+                "id=" + id +
+                ", date=" + date +
+                ", position={id=" + position.getId()+", name="+position.getName()+", isAdmin="+position.isAdmin() +
+                            ", manager="+((position.getManager()!=null)?position.getManager().getId():null)+'}'+
+                ", employee={id=" + employee.getId()+", name="+employee.getFirstName()+" "+employee.getLastName()+
+                            ", position="+employee.getPosition().getId()+'}'+
+                ", recommended=" + recommended +
+                ", selected=" + selected +
+                ", rejected=" + rejected +
+                ", approved=" + approved +
+                '}';
+    }
 }
