@@ -2,23 +2,28 @@ package com.revature.maxtermind.service;
 
 import com.revature.maxtermind.model.Employee;
 import com.revature.maxtermind.model.Notification;
+import com.revature.maxtermind.repository.EmployeeRepository;
 import com.revature.maxtermind.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class NotificationService {
 
     NotificationRepository repository;
+    EmployeeRepository eRepository;
     PositionService pService;
 
     @Autowired
-    public NotificationService(NotificationRepository repository, PositionService pService) {
+    public NotificationService(NotificationRepository repository,
+                               EmployeeRepository eRepository,
+                               PositionService pService) {
         this.repository = repository;
+        this.eRepository = eRepository;
         this.pService = pService;
     }
 
@@ -34,17 +39,21 @@ public class NotificationService {
         return repository.findAllByDescriptionContains(desc);
     }
 
-    public List<Notification> findAllByDate(Date date) {
+    public List<Notification> findAllByDate(LocalDate date) {
         return repository.findAllByDate(date);
     }
 
-    public List<Notification> findAllByRange(Date date1, Date date2) {
-        if(date1.before(date2)) return repository.findAllByDateBetween(date1, date2);
+    public List<Notification> findAllByRange(LocalDate date1, LocalDate date2) {
+        if(date1.isBefore(date2)) return repository.findAllByDateBetween(date1, date2);
         else return repository.findAllByDateBetween(date2, date1);
     }
 
     public List<Notification> findAllByPosition(int id){
         return repository.findAllByPosition(pService.findByPositionId(id));
+    }
+
+    public List<Notification> findAllByToEmployee(int toEmployeeId){
+        return findAllByToEmployee(eRepository.findById(toEmployeeId));
     }
 
     public List<Notification> findAllByToEmployee(Employee toEmployee){

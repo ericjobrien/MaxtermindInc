@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -38,13 +39,13 @@ public class ApplicationController extends HandleExceptionController {
     }
 
     @GetMapping("date/{date}")
-    public List<Application> findAllByDate(@PathVariable Date date) {
+    public List<Application> findAllByDate(@PathVariable LocalDate date) {
 
         return service.findAllByDate(date);
     }
 
     @GetMapping("date/{date1}/{date2}")
-    public List<Application> findAllByRange(@PathVariable Date date1, @PathVariable Date date2) {
+    public List<Application> findAllByRange(@PathVariable LocalDate date1, @PathVariable LocalDate date2) {
 
         return service.findAllByRange(date1, date2);
     }

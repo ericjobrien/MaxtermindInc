@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -24,9 +24,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
 
     List<Notification> findAllByDescriptionContains(String description);
 
-    List<Notification> findAllByDate(Date date);
+    List<Notification> findAllByDate(LocalDate date);
 
-    List<Notification> findAllByDateBetween(Date min, Date max);
+    List<Notification> findAllByDateBetween(LocalDate min, LocalDate max);
 
     Notification findById(int id);
 

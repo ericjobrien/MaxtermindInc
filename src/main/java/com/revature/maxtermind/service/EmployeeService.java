@@ -1,7 +1,6 @@
 package com.revature.maxtermind.service;
 
 import com.revature.maxtermind.model.Employee;
-import com.revature.maxtermind.model.Notification;
 import com.revature.maxtermind.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +15,17 @@ public class EmployeeService {
     EmployeeRepository repository;
     NotificationService nService;
     PositionService pService;
+    ApplicationService aService;
 
     @Autowired
     public EmployeeService(EmployeeRepository repository,
                            NotificationService nService,
-                           PositionService pService) {
+                           PositionService pService,
+                           ApplicationService aService) {
         this.repository = repository;
         this.nService = nService;
         this.pService = pService;
+        this.aService = aService;
     }
 
     public List<Employee> findAll() {
@@ -50,10 +52,11 @@ public class EmployeeService {
         return repository.findById(id);
     }
 
-    public Employee loadNotificationsUnreadByEmployeeId(int id){
+    public Employee loadCollectionsByEmployeeId(int id){
         Employee employee = repository.findById(id);
         if(employee!=null){
-            employee.setNotifications(findNotifications(employee, false));
+            employee.setNotifications(nService.findAllByToEmployeeAndUnread(employee, true));
+            employee.setApplications(aService.findAllByEmployee(employee));
         }
 
         return employee;
@@ -62,7 +65,8 @@ public class EmployeeService {
     public Employee findEmployeeByLogin(String email, String pass){
         Employee employee = repository.findByEmailAndPassword(email, pass);
         if(employee!=null){
-            employee.setNotifications(findNotifications(employee, false));
+            employee.setNotifications(nService.findAllByToEmployeeAndUnread(employee, true));
+            employee.setApplications(aService.findAllByEmployee(employee));
         }
 
         return employee;
@@ -86,10 +90,5 @@ public class EmployeeService {
         }catch (Exception e){
             return false;
         }
-    }
-
-    private List<Notification> findNotifications(Employee employee, boolean all){
-        if(all) return nService.findAllByToEmployee(employee);
-        else return nService.findAllByToEmployeeAndUnread(employee, true);
     }
 }

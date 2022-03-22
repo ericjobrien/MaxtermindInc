@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,8 +25,8 @@ public class Application implements Serializable {
     private int id;
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd")//shape = JsonFormat.Shape.STRING,
-    private Date date;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "applicationPosition_fk"), name = "position_id")
     @JsonIgnoreProperties(value = "applications")
@@ -34,7 +34,6 @@ public class Application implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "applicationEmployee_fk"), name = "employee_id")
     @JsonIgnoreProperties(value = "applications")
-    @JsonView
     private Employee employee;
     @Column
     private boolean recommended = false;

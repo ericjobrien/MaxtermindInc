@@ -14,10 +14,13 @@ import java.util.List;
 public class PositionService {
 
     PositionRepository repository;
+    ApplicationService aService;
 
     @Autowired
-    public PositionService(PositionRepository repository) {
+    public PositionService(PositionRepository repository, ApplicationService aService) {
+
         this.repository = repository;
+        this.aService = aService;
     }
 
     public List<Position> findAll() {
@@ -42,6 +45,14 @@ public class PositionService {
 
     public Position findByPositionId(int id) {
         return repository.findById(id);
+    }
+
+    public Position loadApplicationsByPositionId(int id) {
+        Position position = repository.findById(id);
+        if(position!=null){
+            position.setApplications(aService.findAllByPosition(position));
+        }
+        return position;
     }
 
     @Transactional

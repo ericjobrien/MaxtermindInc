@@ -4,25 +4,29 @@ import com.revature.maxtermind.model.Application;
 import com.revature.maxtermind.model.Employee;
 import com.revature.maxtermind.model.Position;
 import com.revature.maxtermind.repository.ApplicationRepository;
+import com.revature.maxtermind.repository.EmployeeRepository;
+import com.revature.maxtermind.repository.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class ApplicationService {
 
     ApplicationRepository repository;
-    PositionService pService;
-    EmployeeService eService;
+    PositionRepository pRepository;
+    EmployeeRepository eRepository;
 
     @Autowired
-    public ApplicationService(ApplicationRepository repository, PositionService pService, EmployeeService eService) {
+    public ApplicationService(ApplicationRepository repository,
+                              EmployeeRepository eRepository,
+                              PositionRepository pRepository) {
         this.repository = repository;
-        this.pService = pService;
-        this.eService = eService;
+        this.pRepository = pRepository;
+        this.eRepository = eRepository;
     }
 
     public List<Application> findAll() {
@@ -30,7 +34,7 @@ public class ApplicationService {
     }
 
     public List<Application> findAllByPosition(int positionId) {
-        return this.findAllByPosition(pService.findByPositionId(positionId));
+        return this.findAllByPosition(pRepository.findById(positionId));
     }
 
     public List<Application> findAllByPosition(Position position) {
@@ -38,7 +42,11 @@ public class ApplicationService {
     }
 
     public List<Application> findAllByEmployee(int employeeId) {
-        return repository.findAllByEmployee(eService.findByEmployeeId(employeeId));
+        return findAllByEmployee(eRepository.findById(employeeId));
+    }
+
+    public List<Application> findAllByEmployee(Employee employee) {
+        return repository.findAllByEmployee(employee);
     }
 
     public List<Application> findAllByRecommended(boolean recommended) {
@@ -57,12 +65,12 @@ public class ApplicationService {
         return repository.findAllByApproved(approved);
     }
 
-    public List<Application> findAllByDate(Date date) {
+    public List<Application> findAllByDate(LocalDate date) {
         return repository.findAllByDate(date);
     }
 
-    public List<Application> findAllByRange(Date date1, Date date2) {
-        if(date1.before(date2)) return repository.findAllByDateBetween(date1, date2);
+    public List<Application> findAllByRange(LocalDate date1, LocalDate date2) {
+        if(date1.isBefore(date2)) return repository.findAllByDateBetween(date1, date2);
         else return repository.findAllByDateBetween(date2, date1);
     }
 

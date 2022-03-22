@@ -5,12 +5,11 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 @NoArgsConstructor
@@ -41,15 +40,17 @@ public class Employee implements Serializable {
     @Column(name = "start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
+    private LocalDate startDate;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(foreignKey = @ForeignKey(name = "employeePosition_fk"), name = "current_position")
     private Position position;
     @Transient
     private List<Notification> notifications = new ArrayList<>();
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = {"employee","position"})
-    private Set<Application> applications = new HashSet<>();
+    /*@OneToMany(mappedBy = "employee", cascade = CascadeType.MERGE)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Set<Application> applications = new HashSet<>();*/
+    @Transient
+    private List<Application> applications = new ArrayList<>();
 
     @Override
     public String toString() {
