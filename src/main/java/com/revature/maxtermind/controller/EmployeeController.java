@@ -20,7 +20,7 @@ public class EmployeeController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping()
     public List<Employee> findAll() {
         return service.findAll();
     }
@@ -60,7 +60,7 @@ public class EmployeeController {
         return service.loadNotificationsUnreadByEmployeeId(id);
     }
 
-    @PutMapping
+    @PutMapping("saveEmployee")
     public Employee insertEmployee(@RequestBody Employee employee){
         return service.saveEmployee(employee);
     }
