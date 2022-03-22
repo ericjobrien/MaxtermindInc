@@ -65,7 +65,7 @@ class EmployeeControllerTest {
         max.setStartDate(null); // Unsure of how to pass in Object Date
         max.setPosition(null);// Unsure of how to pass in object Position
         max.setNotifications(new ArrayList<>());
-        max.setApplications(new HashSet<>());
+        max.setApplications(new ArrayList<>());
         employees.add(max);
 
         john = new Employee();
@@ -78,7 +78,7 @@ class EmployeeControllerTest {
         john.setStartDate(null); // Unsure of how to pass in Object Date
         john.setPosition(null);// Unsure of how to pass in object Position
         john.setNotifications(new ArrayList<>());
-        john.setApplications(new HashSet<>());
+        john.setApplications(new ArrayList<>());
 
     }
 
