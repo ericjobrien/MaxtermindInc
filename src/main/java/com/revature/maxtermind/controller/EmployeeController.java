@@ -1,7 +1,6 @@
 package com.revature.maxtermind.controller;
 
 import com.revature.maxtermind.model.Employee;
-import com.revature.maxtermind.model.Position;
 import com.revature.maxtermind.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +56,7 @@ public class EmployeeController {
 
     @GetMapping("{id}")
     public Employee getEmployeeById(@PathVariable int id){
-        return service.loadNotificationsUnreadByEmployeeId(id);
+        return service.loadCollectionsByEmployeeId(id);
     }
 
     @PutMapping("saveEmployee")

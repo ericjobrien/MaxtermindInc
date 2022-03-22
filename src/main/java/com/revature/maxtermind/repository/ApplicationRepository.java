@@ -6,7 +6,7 @@ import com.revature.maxtermind.model.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -26,9 +26,9 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 
     List<Application> findAllByApproved(boolean approved);
 
-    List<Application> findAllByDate(Date date);
+    List<Application> findAllByDate(LocalDate date);
 
-    List<Application> findAllByDateBetween(Date min, Date max);
+    List<Application> findAllByDateBetween(LocalDate min, LocalDate max);
 
     Application findById(int id);
 

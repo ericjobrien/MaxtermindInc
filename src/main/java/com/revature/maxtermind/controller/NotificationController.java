@@ -1,13 +1,11 @@
 package com.revature.maxtermind.controller;
 
 import com.revature.maxtermind.model.Notification;
-import com.revature.maxtermind.model.Position;
 import com.revature.maxtermind.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -38,6 +36,12 @@ public class NotificationController extends HandleExceptionController {
         return service.findAllByPosition(positionId);
     }
 
+    @GetMapping("toemployee/{toEmployeeId}")
+    public List<Notification> findAllByToEmployee(@PathVariable int toEmployeeId) {
+
+        return service.findAllByToEmployee(toEmployeeId);
+    }
+
     @GetMapping("description/{description}")
     public List<Notification> findAllByDescription(@PathVariable String description) {
 
@@ -45,14 +49,13 @@ public class NotificationController extends HandleExceptionController {
     }
 
     @GetMapping("date/{date}")
-    public List<Notification> findAllByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+    public List<Notification> findAllByDate(@PathVariable LocalDate date) {
 
         return service.findAllByDate(date);
     }
 
     @GetMapping("date/{date1}/{date2}")
-    public List<Notification> findAllByRange(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date1,
-                                             @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date2) {
+    public List<Notification> findAllByRange(@PathVariable LocalDate date1, @PathVariable LocalDate date2) {
 
         return service.findAllByRange(date1, date2);
     }

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,19 +32,21 @@ public class ActionService {
 
     @Transactional
     public Notification recommendedApplication(int positionId, int managerId, int employeeId) {
-        Position position = pService.findByPositionId(positionId);
-        Employee toEmployee = eService.findByEmployeeId(employeeId);
+        Employee manager = eService.findByEmployeeId(managerId);
+        if(manager.getPosition().isAdmin()) {
+            Position position = pService.findByPositionId(positionId);
+            Employee toEmployee = eService.findByEmployeeId(employeeId);
 
-        Application application = aService.findByEmployeeAndPosition(toEmployee, position);
-        if(application==null) application = createApplication(toEmployee, position);
+            Application application = aService.findByEmployeeAndPosition(toEmployee, position);
+            if (application == null) application = createApplication(toEmployee, position);
 
-        if(!application.isRecommended() && !application.isApproved() && !application.isRejected()) {
-            application.setRecommended(true);
+            if (!application.isRecommended() && !application.isApproved() && !application.isRejected()) {
+                application.setRecommended(true);
 
-            if (aService.saveApplication(application) != null) {
-                return nService.saveNotification(
-                        createNotification(Action.RECOMMENDATION,
-                                eService.findByEmployeeId(managerId), toEmployee, position));
+                if (aService.saveApplication(application) != null) {
+                    return nService.saveNotification(
+                            createNotification(Action.RECOMMENDATION, manager, toEmployee, position));
+                }
             }
         }
 
@@ -74,12 +76,15 @@ public class ActionService {
     @Transactional
     public Notification approvedApplication(int applicationId, int managerId) {
         Application application = aService.findByApplicationId(applicationId);
-        if(!application.isApproved() && !application.isRejected()) {
+        Employee manager = eService.findByEmployeeId(managerId);
+        if(manager.getPosition().isAdmin() && manager.getPosition().getId() == application.getPosition().getId()
+                && !application.isApproved() && !application.isRejected())
+        {
             application.setApproved(true);
             Employee employee = application.getEmployee();
             employee.setPosition(application.getPosition());
             if (aService.updateApplication(application) != null) {
-                Employee manager = eService.findByEmployeeId(managerId);
+
                 List<Application> list = aService.findAllByPosition(application.getPosition());
                 for (Application app : list) {
                     if (app.getId() != application.getId()) {
@@ -96,7 +101,8 @@ public class ActionService {
 
     @Transactional
     public Notification rejectedApplication(Application application, Employee manager) {
-        if(!application.isRejected() && !application.isApproved()) {
+        if(manager.getPosition().isAdmin() && manager.getPosition().getId() == application.getPosition().getId()
+                && !application.isRejected() && !application.isApproved()) {
             application.setRejected(true);
             if(aService.updateApplication(application)!=null){
                 return nService.saveNotification(
@@ -115,7 +121,7 @@ public class ActionService {
 
     private Application createApplication(Employee employee, Position position){
         Application application = new Application();
-        application.setDate(new Date());
+        application.setDate(LocalDate.now());
         application.setPosition(position);
         application.setEmployee(employee);
 
@@ -126,7 +132,7 @@ public class ActionService {
                                             Employee toEmployee, Position position){
         Notification notification = new Notification();
         notification.setAction(action);
-        notification.setDate(new Date());
+        notification.setDate(LocalDate.now());
         notification.setUnread(true);
         notification.setFromEmployee(fromEmployee);
         notification.setToEmployee(toEmployee);

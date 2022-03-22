@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,7 +41,7 @@ public class Notification implements Serializable {
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
     @Enumerated(EnumType.STRING)
     private Action action;
 

@@ -51,7 +51,7 @@ public class PositionController extends HandleExceptionController {
 
     @GetMapping("{id}")
     public Position getPositionById(@PathVariable int id){
-        return service.findByPositionId(id);
+        return service.loadApplicationsByPositionId(id);
     }
 
     @PutMapping
