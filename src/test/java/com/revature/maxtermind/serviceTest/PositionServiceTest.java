@@ -1,9 +1,11 @@
-package com.revature.maxtermind.service;
+package com.revature.maxtermind.serviceTest;
 
 import com.revature.maxtermind.model.Employee;
 import com.revature.maxtermind.model.Position;
 import com.revature.maxtermind.repository.EmployeeRepository;
 import com.revature.maxtermind.repository.PositionRepository;
+import com.revature.maxtermind.service.ApplicationService;
+import com.revature.maxtermind.service.PositionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
