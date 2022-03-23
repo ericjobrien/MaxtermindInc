@@ -81,6 +81,8 @@ public class EmployeeService {
     public Employee updateEmployee(Employee employee) {
         return repository.save(employee);
     }
+    //Do we need to implement a try catch and or control flow if the employee we are looking for does
+    //not exist?
 
     @Transactional
     public boolean deleteEmployee(int id) {
