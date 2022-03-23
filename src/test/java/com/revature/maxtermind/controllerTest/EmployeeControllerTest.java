@@ -82,9 +82,6 @@ class EmployeeControllerTest {
         john.setApplications(new ArrayList<>());
 
 
-
-
-
         max.setId(0);
         max.setPassword("password123");
         max.setFirstName("Max");
@@ -171,13 +168,13 @@ class EmployeeControllerTest {
 //    }
 //
 //    @Test
-//    void getEmployeesByManager() throws Exception{
-//        when(service.findAllByManager(any(Integer.class))).thenReturn(employees);
-//        this.mockMvc.perform(get("/manager/0"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().json("[{\"id\" : 0, \"password\" : \"password123\", \"first_name\" : \"Max\", \"last_name\" : \"Hilky\", \"email\" : \"null\", \"phone_number\" : \"1234567890\", \"photo\" : \"null\", \"start_date\" : \"null\", \"position\" : \"null\", \"notifications\" : [] }]"));
-//    }
+    void getEmployeesByManager() throws Exception{
+        when(service.findAllByManager(any(Integer.class))).thenReturn(employees);
+        this.mockMvc.perform(get("/manager/0"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{\"id\" : 0, \"password\" : \"password123\", \"first_name\" : \"Max\", \"last_name\" : \"Hilky\", \"email\" : \"null\", \"phone_number\" : \"1234567890\", \"photo\" : \"null\", \"start_date\" : \"null\", \"position\" : \"null\", \"notifications\" : [] }]"));
+    }
 //
 //    @Test
 //    void getEmployeesByPosition() throws Exception{
