@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /maxtermind-backend.log
-/src/main/resources/sql.properties
+
