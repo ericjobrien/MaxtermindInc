@@ -1,14 +1,15 @@
-package com.revature.maxtermind.service;
+package com.revature.maxtermind.serviceTest;
 
 import com.revature.maxtermind.model.Employee;
 import com.revature.maxtermind.model.Position;
 import com.revature.maxtermind.repository.EmployeeRepository;
+import com.revature.maxtermind.service.ApplicationService;
+import com.revature.maxtermind.service.EmployeeService;
+import com.revature.maxtermind.service.NotificationService;
+import com.revature.maxtermind.service.PositionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,11 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+//This still needs testing applied
 
-
-class EmployeeServiceTest {
+class ActionServiceTest {
 
     private EmployeeService service;
 
