@@ -7,13 +7,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class EmployeeTest {
-    Employee employee = new Employee(0, "password123", "Max", "Hilky", "example@example.com",
-            1234567890, "espn.com", LocalDate.parse("2020-01-08"), position,
-            );
+/*    Employee employee = new Employee(0, "password123", "Max", "Hilky",
+            "example@example.com", 1234567890, "espn.com", LocalDate.parse("2020-01-08"),
+            position, new ArrayList<>(),new ArrayList<>());
 
 
 
-            max.setId(0);
+        max.setId(0);
         max.setPassword("password123");
         max.setFirstName("Max");
         max.setLastName("Hilky");
@@ -56,5 +56,5 @@ public class EmployeeTest {
         employee.setId(0);
     }
 
-
+*/
 }
