@@ -1,19 +1,14 @@
 package com.revature.maxtermind.serviceTest;
 
+import com.revature.maxtermind.model.Application;
 import com.revature.maxtermind.model.Employee;
 import com.revature.maxtermind.model.Position;
-import com.revature.maxtermind.repository.EmployeeRepository;
 import com.revature.maxtermind.repository.PositionRepository;
 import com.revature.maxtermind.service.ApplicationService;
 import com.revature.maxtermind.service.PositionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,33 +28,40 @@ public class PositionServiceTest {
     private PositionRepository repo;
     ApplicationService aService;
 
-    private List<Position> pos;
-    private final Position manager = new Position();
-    //private final Employee max = new Employee();
+    private List<Position> positions;
+    private List<Application> apps;
+    private final Position position0 = new Position();
+    private final Employee max = new Employee();
     private final Employee john = new Employee();
-    private final Position position = new Position();
+    private final Position position1 = new Position();
     private static boolean deleteCalled = false;
 
     @BeforeEach
     public void setup() {
         repo = Mockito.mock(PositionRepository.class);
+        aService = Mockito.mock(ApplicationService.class);
         service = new PositionService(repo, aService);
 
-        position.setApplications(new ArrayList<>());
-        position.setId(1);
-        position.setManager(john);
-        position.setName("Administration Level 1");
-        position.setSalary(BigDecimal.valueOf(39000));
+        positions = new ArrayList<>();
+        position1.setApplications(new ArrayList<>());
+        position1.setId(1);
+        position1.setManager(john);
+        position1.setName("Administration Level 1");
+        position1.setSalary(BigDecimal.valueOf(39000));
+        position1.setAdmin(true);
+        this.positions.add(position1);
 
 
-        pos = new ArrayList<>();
-        manager.setApplications(new ArrayList<>());
-        manager.setId(1);
-        manager.setManager(john);
-        manager.setName("Administration Level 1");
-        manager.setSalary(BigDecimal.valueOf(39000));
-        this.pos.add(manager);
 
+        position0.setApplications(new ArrayList<>());
+        position0.setId(0);
+        position0.setManager(john);
+        position0.setName("Employee Level 1");
+        position0.setSalary(BigDecimal.valueOf(29000));
+        position0.setAdmin(false);
+        this.positions.add(position0);
+
+        john.setId(1);
         john.setPassword("123password");
         john.setFirstName("John");
         john.setLastName("Wayne");
@@ -67,102 +69,100 @@ public class PositionServiceTest {
         john.setPhoneNumber(1234567809);
         john.setPhoto("apple.com");
         john.setStartDate(LocalDate.parse("2020-01-08"));
-        john.setPosition(position);
+        john.setPosition(position1);
         john.setNotifications(new ArrayList<>());
         john.setApplications(new ArrayList<>());
 
-//        employees = new ArrayList<>();
-//        max.setId(0);
-//        max.setPassword("password123");
-//        max.setFirstName("Max");
-//        max.setLastName("Hilky");
-//        max.setEmail("example@example.com");
-//        max.setPhoneNumber(1234567890);
-//        max.setPhoto("espn.com");
-//        max.setStartDate(LocalDate.parse("2020-01-08")); // Unsure of how to pass in Object Date
-//        max.setPosition(position);
-//        max.setNotifications(new ArrayList<>());
-//        max.setApplications(new ArrayList<>());
-//        this.employees.add(max);
+
+        max.setId(0);
+        max.setPassword("password123");
+        max.setFirstName("Max");
+        max.setLastName("Hilky");
+        max.setEmail("max@example.com");
+        max.setPhoneNumber(1111111111);
+        max.setPhoto("espn.com");
+        max.setStartDate(LocalDate.parse("2020-11-28")); // Unsure of how to pass in Object Date
+        max.setPosition(position0);
+        max.setNotifications(new ArrayList<>());
+        max.setApplications(new ArrayList<>());
+
+        this.apps = new ArrayList<>();
+        Application app = new Application();
+        app.setId(1);
+        app.setPosition(position1);
+        app.setEmployee(max);
+        app.setDate(LocalDate.parse("2020-12-15"));
+        app.setRecommended(false);
+        app.setSelected(true);
+        app.setApproved(false);
+        app.setRejected(true);
+        this.apps.add(app);
 
     }
 
     @Test
     void findAll_test(){
-        when(repo.findAll()).thenReturn(pos);
-        assertEquals(service.findAll(), pos);
+        when(repo.findAll()).thenReturn(positions);
+        assertEquals(service.findAll(), positions);
     }
 
     @Test
     void findAllByName_test(){
-        when(repo.findAllByNameContains("john")).thenReturn(pos);
-        assertEquals(service.findAllByName("john"), pos);
+        when(repo.findAllByNameContains("level 1")).thenReturn(positions);
+        assertEquals(service.findAllByName("level 1"), positions);
     }
 
     @Test
     void findAllByAdmin_test(){
-        when(repo.findAllByAdmin(true)).thenReturn(pos);
-        assertEquals(service.findAllByAdmin(true), pos);
+        when(repo.findAllByAdmin(true)).thenReturn(positions);
+        assertEquals(service.findAllByAdmin(true), positions);
     }
 
     @Test
     void findAllBySalary_test(){
-        when(repo.findAllBySalary(BigDecimal.valueOf(39000))).thenReturn(pos);
-        assertEquals(service.findAllBySalary(39000), pos);
+        when(repo.findAllBySalary(BigDecimal.valueOf(39000))).thenReturn(positions);
+        assertEquals(service.findAllBySalary(39000), positions);
     }
-/*
-    I did not understand the query, these should mirror each other, I think we can do assertTrue if Equals doesnt work.
-    -Max
 
     @Test
     public void findAllOpen_test(){
-        when(repo.findAllOpen(john)).thenReturn(employees);
-        assertEquals(service.findAllOpen(0), max);
+        when(repo.findAllOpen()).thenReturn(positions);
+        assertEquals(service.findAllOpen(), positions);
     }
 
     @Test
     public void findAllClosed_test(){
-        when(repo.findAllClosed(john)).thenReturn(employees);
-        assertEquals(service.findAllClosed(0), max);
+        when(repo.findAllClosed()).thenReturn(positions);
+        assertEquals(service.findAllClosed(), positions);
     }
- */
 
     @Test
     void findByPositionId_test(){
-        when(repo.findById(1)).thenReturn(manager);
-        assertEquals(service.findByPositionId(1), manager);
+        when(repo.findById(1)).thenReturn(position1);
+        assertEquals(service.findByPositionId(1), position1);
     }
 
-    //This is one I will have to come back to, it should result in 2 tests, one for null and one for !null. -Max
-//    @Test
-//    public void loadApplicationsByEmployeeId_test(){
-//        when(repo.findById(0)).thenReturn(max);
-//        assertEquals(service.loadCollectionsByEmployeeId(0), max);
-//    }
+
+    @Test
+    public void loadApplicationsByEmployeeId_test(){
+        when(repo.findById(1)).thenReturn(position1);
+        when(aService.findAllByPosition(position1)).thenReturn(apps);
+        assertEquals(service.loadApplicationsByPositionId(1), position1);
+        assertEquals(position1.getApplications(), apps);
+    }
 
     @Test
     void savePosition_test(){
-        when(repo.save(any(Position.class))).thenReturn(manager);
-        assertEquals(service.savePosition(manager), manager);
+        when(repo.save(any(Position.class))).thenReturn(position0);
+        assertEquals(service.savePosition(position0), position0);
     }
 
-    //not working
-//    @Test
-//    void updateEmployee_test(){
-//        //here we create a position/object on our table
-//        when(repo.save(manager)).thenReturn(manager);
-//        //here we look to see if it is there, if so, update that position/object
-//        when(repo.save(any(Employee.class))).thenReturn(john);
-//        //To update position/object
-//        Position newManager = new Position();
-//        newManager.setApplications(new ArrayList<>());
-//        newManager.setId(1);
-//        newManager.setManager(john);
-//        newManager.setName("Administration Level 2");
-//        newManager.setSalary(BigDecimal.valueOf(39005));
-//        //see if update was successful (newManager) should now exist
-//        assertEquals(service.updatePosition(newManager)), john);
-//    }
+
+    @Test
+    void updateEmployee_test(){
+        when(repo.save(position0)).thenReturn(position0);
+        assertEquals(service.updatePosition(position0), position0);
+    }
 
     @Test
     void deletePosition() {
