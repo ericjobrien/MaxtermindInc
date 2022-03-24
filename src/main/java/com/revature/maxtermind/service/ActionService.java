@@ -77,8 +77,7 @@ public class ActionService {
     public Notification approvedApplication(int applicationId, int managerId) {
         Application application = aService.findByApplicationId(applicationId);
         Employee manager = eService.findByEmployeeId(managerId);
-        if(manager.getPosition().isAdmin() && manager.getId() == application.getPosition().getManager().getId()
-                && !application.isApproved() && !application.isRejected())
+        if(manager.getPosition().isAdmin() && !application.isApproved() && !application.isRejected())
         {
             application.setApproved(true);
             Employee employee = application.getEmployee();
@@ -101,8 +100,7 @@ public class ActionService {
 
     @Transactional
     public Notification rejectedApplication(Application application, Employee manager) {
-        if(manager.getPosition().isAdmin() && manager.getId() == application.getPosition().getManager().getId()
-                && !application.isRejected() && !application.isApproved()) {
+        if(manager.getPosition().isAdmin() && !application.isRejected() && !application.isApproved()) {
             application.setRejected(true);
             if(aService.updateApplication(application)!=null){
                 return nService.saveNotification(
