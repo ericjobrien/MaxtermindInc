@@ -138,17 +138,17 @@ class EmployeeControllerTest {
                         "\"name\" : \"Administration Level 1\", \"salary\" : 39000, \"name\" : \"Administration Level 1\"}, \"notifications\" : [] }]"));
     }
 
-    @Test
-    public void getEmployeesbyName() throws Exception {
-        when(service.findAllByName(any(String.class))).thenReturn(employees);
-        this.mockMvc.perform(get("/name/max"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\" : 0, \"password\" : \"password123\", \"firstName\" : \"Max\", " +
-                        "\"lastName\" : \"Hilky\", \"email\" : \"example@example.com\", \"phoneNumber\" : 1234567890, " +
-                        "\"photo\" : \"espn.com\", \"startDate\" : \"2020-01-08\", \"position\" : { \"id\" : 1, " +
-                        "\"name\" : \"Administration Level 1\", \"salary\" : 39000, \"name\" : \"Administration Level 1\"}, \"notifications\" : [] }]"));
-    }
+//    @Test
+//    public void getEmployeesbyName() throws Exception {
+//        when(service.findAllByName(any(String.class))).thenReturn(employees);
+//        this.mockMvc.perform(get("/name/max"))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(content().json("[{\"id\" : 0, \"password\" : \"password123\", \"firstName\" : \"Max\", " +
+//                        "\"lastName\" : \"Hilky\", \"email\" : \"example@example.com\", \"phoneNumber\" : 1234567890, " +
+//                        "\"photo\" : \"espn.com\", \"startDate\" : \"2020-01-08\", \"position\" : { \"id\" : 1, " +
+//                        "\"name\" : \"Administration Level 1\", \"salary\" : 39000, \"name\" : \"Administration Level 1\"}, \"notifications\" : [] }]"));
+//    }
 
 //    @Test
 //    public void getAdministrators() throws Exception {
