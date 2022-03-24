@@ -30,30 +30,39 @@ public class EmployeeTest {
         employee.setId(0);
     }
 
-//    @Test
-//    void setPassword_test(){
-//        employee.setId("Max");
-//    }
-//
-//    @Test
-//    void setFirstName_test(){
-//        employee.setId(0);
-//    }
-//
-//    @Test
-//    void setLastName_test(){
-//        employee.setId(0);
-//    }
-//
-//    @Test
-//    void setEmail_test(){
-//        employee.setId(0);
-//    }
-//
-//    @Test
-//    void setPhoneNumber_test(){
-//        employee.setId(0);
-//    }
+    @Test
+    void setPassword_test(){
+        employee.setPassword("password123");
+    }
 
+    @Test
+    void setFirstName_test(){
+        employee.setFirstName("Max");
+    }
+
+    @Test
+    void setLastName_test(){
+        employee.setLastName("Hilky");
+    }
+
+    @Test
+    void setEmail_test(){
+        employee.setEmail("example@example.com");
+    }
+
+    @Test
+    void setPhoneNumber_test(){
+        employee.setPhoneNumber(1234567890);
+    }
+
+    @Test
+    void setPhoto_test(){
+        employee.setPhoto("espn.com");
+    }
+
+    @Test
+    void setStartDate_test(){
+        employee.setStartDate((LocalDate.parse("2020-01-08")));
+    }
 
 }
